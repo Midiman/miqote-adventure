@@ -20,6 +20,9 @@ end
 
 local t = LoadFallbackB();
 
+-- DifficultyDisplay
+t[#t+1] = StandardDecorationFromFileOptional("DifficultyDisplay","DifficultyDisplay")
+
 -- StepsDisplay
 for pn in ivalues(PlayerNumber) do
 	local MetricsName = "StepsDisplay" .. PlayerNumberToString(pn)
