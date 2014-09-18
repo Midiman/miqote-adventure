@@ -1,4 +1,4 @@
-local t = Def.ActorFrame {};
+local t = Def.ActorFrame { FOV = 90 }
 
 -- Fill
 t[#t+1] = Def.ActorFrame {
@@ -9,12 +9,18 @@ t[#t+1] = Def.ActorFrame {
 	}
 }
 
+-- Rings
+t[#t+1] = LoadActor("rings") .. {
+	InitCommand=cmd(Center;z,-32),
+	OnCommand=cmd(rotationy,22.5;bob;effectmagnitude,0,0,32;effectperiod,8),
+}
+
 -- Scanline
 t[#t+1] = Def.ActorFrame {
 	InitCommand=cmd(Center;addy,0.5),
 	LoadActor("_texture scanline") .. {
-		InitCommand=cmd(SetTextureFiltering,false;scaletoclipped,16,16;customtexturerect,0,0,4/4,4/4),
-		OnCommand=cmd(diffuse,ThemeColor.Background),
+		InitCommand=cmd(SetTextureFiltering,false;zoomto,SCREEN_WIDTH,SCREEN_HEIGHT;customtexturerect,0,0,SCREEN_WIDTH/256,SCREEN_HEIGHT/1024),
+		OnCommand=cmd(diffuse,ThemeColor.Background;diffusealpha,0.25),
 	}
 }
 --
