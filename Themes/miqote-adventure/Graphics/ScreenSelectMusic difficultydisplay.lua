@@ -34,8 +34,17 @@ for i,diff in pairs(Difficulty) do
 		SetCommand=function(self)
 			local c = self:GetChildren()
 
-			local song = GAMESTATE:GetCurrentSong() or nil
-			if song == nil then
+			local SongOrCourse, StepsOrTrail
+			local IsCourse = GAMESTATE:IsCourseMode()
+			if IsCourse then
+				SongOrCourse = GAMESTATE:GetCurrentCourse()
+				StepsOrTrail = GAMESTATE:GetCurrentTrail(GAMESTATE:GetMasterPlayerNumber())
+			else
+				SongOrCourse = GAMESTATE:GetCurrentSong()
+				StepsOrTrail = GAMESTATE:GetCurrentSteps(GAMESTATE:GetMasterPlayerNumber())
+			end
+
+			if SongOrCourse == nil then
 				c.Meter:targetnumber(0)
 				if diff == "Difficulty_Edit" then
 					c.Description:settext("Edit")
@@ -45,8 +54,7 @@ for i,diff in pairs(Difficulty) do
 				return
 			end
 
-			local steps = GAMESTATE:GetCurrentSteps( GAMESTATE:GetMasterPlayerNumber() )
-			if steps == nil then
+			if StepsOrTrail == nil then
 				c.Meter:targetnumber(0)
 				if diff == "Difficulty_Edit" then
 					c.Description:settext("Edit")
@@ -56,7 +64,7 @@ for i,diff in pairs(Difficulty) do
 				return
 			end
 
-			local style = steps:GetStepsType() or nil
+			local style = StepsOrTrail:GetStepsType() or nil
 			if style == nil then
 				c.Meter:targetnumber(0)
 				if diff == "Difficulty_Edit" then
@@ -67,7 +75,19 @@ for i,diff in pairs(Difficulty) do
 				return
 			end
 
-			local step = song:GetOneSteps( style, diff ) or nil
+			if IsCourse then
+				step = nil
+				local all_trials = SongOrCourse:GetAllTrails()
+				for i=1,#all_trials do
+					local trial_difficulty = all_trials[i]:GetDifficulty()
+					if trial_difficulty == diff then
+						step = all_trials[i]
+					end
+				end
+			else
+				step = SongOrCourse:GetOneSteps( style, diff ) or nil
+			end	
+
 			if step == nil then
 				c.Meter:targetnumber(0)
 				if diff == "Difficulty_Edit" then
@@ -79,16 +99,19 @@ for i,diff in pairs(Difficulty) do
 			end
 			
 			local id = Enum.Reverse(Difficulty)[diff]
-				
+			
 			c.Meter:targetnumber(step:GetMeter())
+
 			self:playcommand("Enabled")
 			self:playcommand("TweenOn")
 
-			if diff == "Difficulty_Edit" and song:GetOneSteps( style, "Difficulty_Edit" ) then
-				local num_edits = NumEdit( song, GAMESTATE:GetCurrentStyle():GetStepsType() )
-				local edit_desc = (num_edits == 1) and "Edit" or "Edits"
-				c.Meter:targetnumber(num_edits)
-				c.Description:settextf(edit_desc)
+			if not IsCourse then
+				if diff == "Difficulty_Edit" and SongOrCourse:GetOneSteps( style, "Difficulty_Edit" ) then
+					local num_edits = NumEdit( SongOrCourse, GAMESTATE:GetCurrentStyle():GetStepsType() )
+					local edit_desc = (num_edits == 1) and "Edit" or "Edits"
+					c.Meter:targetnumber(num_edits)
+					c.Description:settextf(edit_desc)
+				end
 			end
 		end,
 		CurrentSongChangedMessageCommand=cmd(playcommand,"Set"),
