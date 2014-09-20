@@ -20,30 +20,25 @@ end
 
 local t = LoadFallbackB();
 
+-- TextBanner
+t[#t+1] = StandardDecorationFromFileOptional("TextBanner", "TextBanner")
+
+-- BPM
+t[#t+1] = StandardDecorationFromFileOptional("BPM", "BPM")
+
 -- DifficultyDisplay
 t[#t+1] = StandardDecorationFromFileOptional("DifficultyDisplay","DifficultyDisplay")
 
--- StepsDisplay
-for pn in ivalues(PlayerNumber) do
-	local MetricsName = "StepsDisplay" .. PlayerNumberToString(pn)
-
-	t[#t+1] = StepsDisplay(pn) .. {
-		InitCommand=function(self) 
-			self:player(pn)
-			self:name(MetricsName) 
-			ActorUtil.LoadAllCommandsAndSetXY(self,Var "LoadingScreen")
-		end,
-		PlayerJoinedMessageCommand=function(self, params)
-			if params.Player == pn then
-				self:visible(true)
+-- PaneDisplay
+for i, pn in pairs(PlayerNumber) do
+	if ShowStandardDecoration("PaneDisplay" ..  ToEnumShortString(pn)) then
+		t[#t+1] = LoadActor(THEME:GetPathG(Var "LoadingScreen","PaneDisplay"), pn) .. {
+			InitCommand=function(self)
+				self:name("PaneDisplay" .. ToEnumShortString(pn))
+				ActorUtil.LoadAllCommandsAndSetXY(self,Var "LoadingScreen")
 			end
-		end,
-		PlayerUnjoinedMessageCommand=function(self, params)
-			if params.Player == pn then
-				self:visible(false)
-			end
-		end,
-	}
+		}
+	end
 end
 
-return t;
+return t
