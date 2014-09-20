@@ -45,7 +45,29 @@ for i,diff in pairs(Difficulty) do
 				return
 			end
 
-			local step = song:GetOneSteps( GAMESTATE:GetCurrentStyle():GetStepsType(), diff ) or nil
+			local steps = GAMESTATE:GetCurrentSteps( GAMESTATE:GetMasterPlayerNumber() )
+			if steps == nil then
+				c.Meter:targetnumber(0)
+				if diff == "Difficulty_Edit" then
+					c.Description:settext("Edit")
+				end
+				self:playcommand("Disabled")
+				self:playcommand("TweenOff")
+				return
+			end
+
+			local style = steps:GetStepsType() or nil
+			if style == nil then
+				c.Meter:targetnumber(0)
+				if diff == "Difficulty_Edit" then
+					c.Description:settext("Edit")
+				end
+				self:playcommand("Disabled")
+				self:playcommand("TweenOff")
+				return
+			end
+
+			local step = song:GetOneSteps( style, diff ) or nil
 			if step == nil then
 				c.Meter:targetnumber(0)
 				if diff == "Difficulty_Edit" then
@@ -62,7 +84,7 @@ for i,diff in pairs(Difficulty) do
 			self:playcommand("Enabled")
 			self:playcommand("TweenOn")
 
-			if diff == "Difficulty_Edit" and song:GetOneSteps( GAMESTATE:GetCurrentStyle():GetStepsType(), "Difficulty_Edit" ) then
+			if diff == "Difficulty_Edit" and song:GetOneSteps( style, "Difficulty_Edit" ) then
 				local num_edits = NumEdit( song, GAMESTATE:GetCurrentStyle():GetStepsType() )
 				local edit_desc = (num_edits == 1) and "Edit" or "Edits"
 				c.Meter:targetnumber(num_edits)

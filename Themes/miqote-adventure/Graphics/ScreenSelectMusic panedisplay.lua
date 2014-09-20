@@ -47,15 +47,13 @@ best_score[#best_score+1] = Def.ActorFrame {
 		Name="CurrentBest",
 		Text=string.format("%02.02f%%", math.random(0,10000)/100),
 		--
-		InitCommand=cmd(y,best_score_y_spacing*-1),
-		OnCommand=cmd(shadowlength,1)
+		InitCommand=cmd(y,best_score_y_spacing*-1)
 	},
 	LoadFont("Common Normal") .. {
 		Name="MachineBest",
 		Text=string.format("%02.02f%%", 100.00),
 		--
-		InitCommand=cmd(y,best_score_y_spacing),
-		OnCommand=cmd(shadowlength,1)
+		InitCommand=cmd(y,best_score_y_spacing)	
 	}
 }
 
@@ -65,7 +63,6 @@ local radar_x_start = -(448-24)/2 + 192-16
 local radar_x_spacing = 128
 local radar_y_spacing = 16
 local radar_rows = 4
--- kind of ugly
 local radar_start = 6
 
 for i=radar_start,#RadarCategory do 
@@ -105,14 +102,14 @@ for i=radar_start,#RadarCategory do
 			Text=str,
 			--
 			InitCommand=cmd(),
-			OnCommand=cmd(horizalign,left;zoom,0.5;diffuse,ThemeColor.TextDark;shadowlength,1)
+			OnCommand=cmd(horizalign,left;zoom,0.5;diffuse,ThemeColor.TextDark)
 		},
 		LoadFont("Common Normal") .. {
 			Name="Value",
 			Text="",
 			--
 			InitCommand=cmd(horizalign,right;x,128-8),
-			OnCommand=cmd(diffuse,ThemeColor.Secondary;shadowlength,1;zoom,0.5),
+			OnCommand=cmd(diffuse,ThemeColor.Secondary;zoom,0.5),
 		}
 	}
 end
