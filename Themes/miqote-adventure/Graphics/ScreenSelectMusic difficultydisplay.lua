@@ -64,8 +64,9 @@ for i,diff in pairs(Difficulty) do
 
 			if diff == "Difficulty_Edit" and song:GetOneSteps( GAMESTATE:GetCurrentStyle():GetStepsType(), "Difficulty_Edit" ) then
 				local num_edits = NumEdit( song, GAMESTATE:GetCurrentStyle():GetStepsType() )
+				local edit_desc = (num_edits == 1) and "Edit" or "Edits"
 				c.Meter:targetnumber(num_edits)
-				c.Description:settextf("Edits")
+				c.Description:settextf(edit_desc)
 			end
 		end,
 		CurrentSongChangedMessageCommand=cmd(playcommand,"Set"),

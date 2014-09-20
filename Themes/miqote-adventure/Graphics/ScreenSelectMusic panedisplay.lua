@@ -72,9 +72,32 @@ for i=radar_start,#RadarCategory do
 	local j = i - radar_start
 	local x_pos = (math.floor((j)/4) % 4) * radar_x_spacing
 	local y_pos = ((j) % 4) * radar_y_spacing
-	local str = RadarCategoryToLocalizedString(RadarCategory[i])
+	local rc = RadarCategory[i]
+	local str = RadarCategoryToLocalizedString(rc)
+	local format = "%03i"
+
 	radar_text[#radar_text+1] = Def.ActorFrame {
 		InitCommand=cmd(x,radar_x_start + x_pos;y,-16 + y_pos),
+		SetCommand=function(self)
+			local c = self:GetChildren()
+			local song = GAMESTATE:GetCurrentSong()
+			if song == nil then 
+				c.Value:settext(0)
+				return
+			end
+
+			local steps = GAMESTATE:GetCurrentSteps(pn)
+			if steps == nil then
+				c.Value:settext(0)
+				return
+			end
+			
+			local meter = steps:GetRadarValues(pn):GetValue(rc)
+			c.Value:settextf(format, meter)
+		end,
+		CurrentSongChangedMessageCommand=cmd(playcommand,"Set"),
+		CurrentStepsP1ChangedMessageCommand=cmd(playcommand,"Set"),
+		CurrentStepsP2ChangedMessageCommand=cmd(playcommand,"Set"),
 		--
 		Name="RadarFrame" .. i,
 		LoadFont("Common Normal") .. {
@@ -86,7 +109,7 @@ for i=radar_start,#RadarCategory do
 		},
 		LoadFont("Common Normal") .. {
 			Name="Value",
-			Text=string.format("%03i",math.random(0,999)),
+			Text="",
 			--
 			InitCommand=cmd(horizalign,right;x,128-8),
 			OnCommand=cmd(diffuse,ThemeColor.Secondary;shadowlength,1;zoom,0.5),

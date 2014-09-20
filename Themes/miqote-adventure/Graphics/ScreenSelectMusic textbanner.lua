@@ -23,6 +23,7 @@ t[#t+1] = Def.ActorFrame {
 		c.Genre:settext( disp_genre )
 	end,
 	CurrentSongChangedMessageCommand=cmd(playcommand,"Set"),
+	DisplayLanguageChangedMessageCommand=cmd(playcommand,"Set"),
 	--
 	Def.Quad {
 		Name="Underline",
