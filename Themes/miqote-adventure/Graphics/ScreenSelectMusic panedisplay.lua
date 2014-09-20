@@ -37,17 +37,65 @@ local best_score_y_spacing = 18
 
 best_score[#best_score+1] = Def.ActorFrame {
 	InitCommand=cmd(x,best_score_x_start;y,best_score_y_start),
+	SetCommand=function(self)
+		local c = self:GetChildren()
+
+		local SongOrCourse, StepsOrTrail
+		if GAMESTATE:IsCourseMode() then
+			SongOrCourse = GAMESTATE:GetCurrentCourse()
+			StepsOrTrail = GAMESTATE:GetCurrentTrail(pn)
+		else
+			SongOrCourse = GAMESTATE:GetCurrentSong()
+			StepsOrTrail = GAMESTATE:GetCurrentSteps(pn)
+		end
+
+		local profile, scorelist
+		local str = 0
+		if SongOrCourse and StepsOrTrail then
+			local st = StepsOrTrail:GetStepsType()
+			local diff = StepsOrTrail:GetDifficulty()
+			local courseType = GAMESTATE:IsCourseMode() and SongOrCourse:GetCourseType() or nil
+			local cd = GetCustomDifficulty(st, diff, courseType)
+			--self:diffuse(CustomDifficultyToColor(cd))
+			--self:shadowcolor(CustomDifficultyToDarkColor(cd))
+
+			if PROFILEMAN:IsPersistentProfile(pn) then
+				-- player profile
+				profile = PROFILEMAN:GetProfile(pn);
+			else
+				-- machine profile
+				profile = PROFILEMAN:GetMachineProfile();
+			end;
+
+			scorelist = profile:GetHighScoreList(SongOrCourse,StepsOrTrail)
+			assert(scorelist)
+			local scores = scorelist:GetHighScores()
+			local topscore = scores[1]
+			if topscore then
+				str = topscore:GetPercentDP()*100.0
+
+			else
+				str = 0
+			end
+		else
+			str = 0
+		end;
+		c.CurrentBest:targetnumber(str)
+	end,
+	CurrentSongChangedMessageCommand=cmd(playcommand,"Set"),
+	CurrentStepsP1ChangedMessageCommand=cmd(playcommand,"Set"),
+	CurrentStepsP2ChangedMessageCommand=cmd(playcommand,"Set"),
 	--
 	Def.Quad {
 		InitCommand=cmd(zoomto,144,4),
 		OnCommand=cmd(diffuse,ThemeColor.TextDark)
 	},
 	--
-	LoadFont("Common Normal") .. {
+	Def.RollingNumbers {
 		Name="CurrentBest",
-		Text=string.format("%02.02f%%", math.random(0,10000)/100),
-		--
-		InitCommand=cmd(y,best_score_y_spacing*-1)
+		File=THEME:GetPathF("Common","Normal"),
+		Text="-",
+		InitCommand=cmd(y,best_score_y_spacing*-1;Load,"RollingNumbersPaneDisplayPercent"),
 	},
 	LoadFont("Common Normal") .. {
 		Name="MachineBest",
@@ -114,7 +162,7 @@ for i=radar_start,#RadarCategory do
 	}
 end
 
--- Grades
+-- Grade Bar
 local grades = Def.ActorFrame {}
 grades[#grades+1] = Def.ActorFrame {
 	Name="GradeMeter",

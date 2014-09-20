@@ -181,6 +181,10 @@ t[#t+1] = difficulty_frame
 t[#t+1] = cursor_frame
 t[#t+1] = LoadFont("Common Normal") .. {
 	InitCommand=cmd(x,x_spacing * 2.5;y,40),
+	BeginCommand=function(self)
+		local b = THEME:GetMetric("Common","AutoSetStyle")
+		self:visible(b)
+	end,
 	SetCommand=function(self)
 		local steps = GAMESTATE:GetCurrentSteps( GAMESTATE:GetMasterPlayerNumber() ) or nil
 		if steps == nil then return end
