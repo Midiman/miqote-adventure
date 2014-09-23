@@ -26,6 +26,9 @@ t[#t+1] = StandardDecorationFromFileOptional("TextBanner", "TextBanner")
 -- BPM
 t[#t+1] = StandardDecorationFromFileOptional("BPM", "BPM")
 
+-- SortOrder
+t[#t+1] = StandardDecorationFromFileOptional("SortOrder", "SortOrder")
+
 -- DifficultyDisplay
 t[#t+1] = StandardDecorationFromFileOptional("DifficultyDisplay","DifficultyDisplay")
 
@@ -40,5 +43,8 @@ for i, pn in pairs(PlayerNumber) do
 		}
 	end
 end
+
+-- SongOptions transition
+t[#t+1] = StandardDecorationFromFileOptional("OptionsTransition","OptionsTransition")
 
 return t

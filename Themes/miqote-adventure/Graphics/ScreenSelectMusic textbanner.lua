@@ -27,26 +27,26 @@ t[#t+1] = Def.ActorFrame {
 	--
 	Def.Quad {
 		Name="Underline",
-		InitCommand=cmd(y,20;horizalign,right),
+		InitCommand=cmd(y,36;horizalign,right),
 		OnCommand=cmd(zoomto,512,4)
 	},
 	--
 	LoadFont("Common Normal") .. {
 		Name="Title",
 		Text="SongName",
-		InitCommand=cmd(y,-32;horizalign,right),
+		InitCommand=cmd(y,-12;horizalign,right),
 		OnCommand=cmd(shadowlength,1;diffusebottomedge,ThemeColor.TextDark)
 	},
 		LoadFont("Common Normal") .. {
 		Name="Artist",
 		Text="SongName",
-		InitCommand=cmd(horizalign,right),
+		InitCommand=cmd(y,16;horizalign,right),
 		OnCommand=cmd(shadowlength,1)
 	},
 	LoadFont("Common Normal") .. {
 		Name="Genre",
 		Text="SongName",
-		InitCommand=cmd(y,32;horizalign,right),
+		InitCommand=cmd(y,-32;horizalign,right),
 		OnCommand=cmd(shadowlength,1;zoom,0.5)
 	},
 }
