@@ -12,7 +12,13 @@ for i, pn in pairs(PlayerNumber) do
 	end
 end
 
--- SongOptions transition
+-- BPM
 t[#t+1] = StandardDecorationFromFileOptional("BPM","BPM")
+
+-- SongMeter
+t[#t+1] = StandardDecorationFromFileOptional("SongMeter","SongMeter")
+
+-- SongTitle
+t[#t+1] = StandardDecorationFromFileOptional("SongTitle","SongTitle")
 
 return t
