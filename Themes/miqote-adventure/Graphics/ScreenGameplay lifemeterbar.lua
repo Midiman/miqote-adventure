@@ -12,7 +12,7 @@ t[#t+1] = Def.ActorFrame {
 		if param.PlayerNumber == pn then
 			if param.HealthState ~= param.OldHealthState then
 				local state_name = ToEnumShortString(param.HealthState)
-				c.Fill:playcommand(state_name)
+				self:playcommand(state_name)
 			end
 		end
 	end,
@@ -23,10 +23,21 @@ t[#t+1] = Def.ActorFrame {
 			c.Fill:zoomtowidth( life_meter_width * life )
 		end
 	end,
-	--
+	-- Outline
+	Def.Quad {
+		Name="Outline",
+		InitCommand=cmd(zoomto,life_meter_width+life_meter_outline,life_meter_height+life_meter_outline),
+		OnCommand=cmd()
+	},
+	-- Background 
 	Def.Quad {
 		Name="Background",
-		InitCommand=cmd(zoomto,life_meter_width+life_meter_outline,life_meter_height+life_meter_outline),
+		InitCommand=cmd(zoomto,life_meter_width,life_meter_height),
+		OnCommand=cmd(diffuse,ThemeColor.Background)
+		--
+		AliveCommand=cmd(stopeffect;diffuse,ThemeColor.BackgroundDark),
+		DangerCommand=cmd(diffuseshift;effectcolor2,Color.Red;effectcolor1,ColorDarkTone(Color.Red)),
+		DeadCommand=cmd(stopeffect;diffuse,ThemeColor.BackgroundDark),
 	},
 	Def.Quad {
 		Name="Fill",

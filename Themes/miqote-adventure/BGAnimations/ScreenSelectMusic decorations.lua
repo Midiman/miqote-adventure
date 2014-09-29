@@ -1,24 +1,24 @@
 local function StepsDisplay(pn)
 	local function set(self, player)
-		self:SetFromGameState( player );
+		self:SetFromGameState( player )
 	end
 
 	local t = Def.StepsDisplay {
-		InitCommand=cmd(Load,"StepsDisplay",GAMESTATE:GetPlayerState(pn););
-	};
+		InitCommand=cmd(Load,"StepsDisplay",GAMESTATE:GetPlayerState(pn))
+	}
 
 	if pn == PLAYER_1 then
-		t.CurrentStepsP1ChangedMessageCommand=function(self) set(self, pn); end;
-		t.CurrentTrailP1ChangedMessageCommand=function(self) set(self, pn); end;
+		t.CurrentStepsP1ChangedMessageCommand=function(self) set(self, pn) end
+		t.CurrentTrailP1ChangedMessageCommand=function(self) set(self, pn) end
 	else
-		t.CurrentStepsP2ChangedMessageCommand=function(self) set(self, pn); end;
-		t.CurrentTrailP2ChangedMessageCommand=function(self) set(self, pn); end;
+		t.CurrentStepsP2ChangedMessageCommand=function(self) set(self, pn) end
+		t.CurrentTrailP2ChangedMessageCommand=function(self) set(self, pn) end
 	end
 
-	return t;
+	return t
 end
 
-local t = LoadFallbackB();
+local t = LoadFallbackB()
 
 -- TextBanner
 t[#t+1] = StandardDecorationFromFileOptional("TextBanner", "TextBanner")
