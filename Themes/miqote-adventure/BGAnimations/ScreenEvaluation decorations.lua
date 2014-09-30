@@ -72,6 +72,10 @@ for pn in ivalues(GAMESTATE:GetHumanPlayers()) do
 	t[#t+1] = StandardDecorationFromFile( "Judgments" .. ToEnumShortString(pn), "Judgments" )
 end
 
+-- Bonus
+for pn in ivalues(GAMESTATE:GetHumanPlayers()) do
+	t[#t+1] = StandardDecorationFromFile( "Bonuses" .. ToEnumShortString(pn), "Bonuses" )
+end
 
 -- SongTitle
 t[#t+1] = StandardDecorationFromFileOptional("SongTitle","SongTitle")
