@@ -33,10 +33,10 @@ t[#t+1] = Def.ActorFrame {
 	Def.Quad {
 		Name="Background",
 		InitCommand=cmd(zoomto,life_meter_width,life_meter_height),
-		OnCommand=cmd(diffuse,ThemeColor.Background)
+		OnCommand=cmd(diffuse,ThemeColor.Background),
 		--
 		AliveCommand=cmd(stopeffect;diffuse,ThemeColor.BackgroundDark),
-		DangerCommand=cmd(diffuseshift;effectcolor2,Color.Red;effectcolor1,ColorDarkTone(Color.Red)),
+		DangerCommand=cmd(diffuseshift;effectcolor2,ColorMidTone(Color.Red);effectcolor1,ColorDarkTone(Color.Red)),
 		DeadCommand=cmd(stopeffect;diffuse,ThemeColor.BackgroundDark),
 	},
 	Def.Quad {
