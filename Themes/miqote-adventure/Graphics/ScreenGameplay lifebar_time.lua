@@ -3,6 +3,15 @@ local life_meter_width = 512
 local life_meter_height = 56
 local life_meter_outline = 4
 
+local function update_timer(self)
+	local c = self:GetChildren()
+
+	local stats = STATSMAN:GetCurStageStats():GetPlayerStageStats( pn )
+	local time = stats:GetLifeRemainingSeconds()
+
+	c.TimerFont:settext( SecondsToMMSSMsMs( time ) )
+end
+
 local t = Def.ActorFrame {}
 
 t[#t+1] = Def.ActorFrame {
@@ -49,6 +58,17 @@ t[#t+1] = Def.ActorFrame {
 		DangerCommand=cmd(diffuseshift;effectclock,'beat';effectcolor1,PlayerColor(pn);effectcolor2,PlayerDarkColor(pn)),
 		DeadCommand=cmd(stopeffect)
 	},
+	--
+	Def.ActorFrame {
+		Name="TimerFrame",
+		InitCommand=cmd(SetUpdateFunction,update_timer),
+		--
+		LoadFont("Common Normal") .. {
+			Name="TimerFont",
+			Text=SecondsToMMSSMsMs(0),
+			OnCommand=cmd(diffuse,Color.Black)
+		}
+	}
 }
 
 return t
