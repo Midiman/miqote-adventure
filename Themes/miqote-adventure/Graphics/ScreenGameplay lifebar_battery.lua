@@ -4,17 +4,22 @@ local life_meter_height = 56
 local life_meter_outline = 4
 
 local function CreateSeperators()
-	local num_items = GAMESTATE:GetPlayerState(pn):GetPlayerOptions("ModsLevel_Preferred"):BatteryLives()
-
-	local function position(index)
-		return scale(index/num_items,0,1,-life_meter_width/2,life_meter_width/2)
-	end
-
 	local t = Def.ActorFrame {}
 
-	for i = 1, num_items-1 do
+	for i = 1, 50 do
 		t[#t+1] = Def.ActorFrame {
-			InitCommand=cmd(x,position(i)),
+			SetCommand=function(self)
+				local life_meter = SCREENMAN:GetTopScreen():GetLifeMeter(pn)
+				local num_items = life_meter:GetTotalLives()
+
+				local function position(index)
+					return scale(index/num_items,0,1,-life_meter_width/2,life_meter_width/2)
+				end
+
+				self:x(position(i))
+				self:visible(i < num_items)
+			end,
+			OnCommand=cmd(playcommand,"Set"),
 			--
 			Def.Quad {
 				InitCommand=cmd(zoomto,2,life_meter_height),

@@ -115,8 +115,11 @@ for i,diff in pairs(Difficulty) do
 			end
 		end,
 		CurrentSongChangedMessageCommand=cmd(playcommand,"Set"),
+		CurrentCourseChangedMessageCommand=cmd(playcommand,"Set"),
 		CurrentStepsP1ChangedMessageCommand=cmd(playcommand,"Set"),
+		CurrentTrailP1ChangedMessageCommand=cmd(playcommand,"Set"),
 		CurrentStepsP2ChangedMessageCommand=cmd(playcommand,"Set"),
+		CurrentTrailP2ChangedMessageCommand=cmd(playcommand,"Set"),
 		--
 		Def.Quad {
 			Name="Background",
@@ -170,8 +173,11 @@ for i,pn in pairs(PlayerNumber) do
 			c.Cursor:x((id * x_spacing) + x_pos)
 		end,
 		CurrentSongChangedMessageCommand=cmd(playcommand,"Set"),
+		CurrentCourseChangedMessageCommand=cmd(playcommand,"Set"),
 		CurrentStepsP1ChangedMessageCommand=cmd(playcommand,"Set"),
+		CurrentTrailP1ChangedMessageCommand=cmd(playcommand,"Set"),
 		CurrentStepsP2ChangedMessageCommand=cmd(playcommand,"Set"),
+		CurrentTrailP2ChangedMessageCommand=cmd(playcommand,"Set"),
 		--
 		PlayerJoinedMessageCommand=function(self, params)
 			if params.Player == pn then
@@ -223,8 +229,11 @@ t[#t+1] = LoadFont("Common Normal") .. {
 	NormalCommand=cmd(stopeffect),
 	--
 	CurrentSongChangedMessageCommand=cmd(playcommand,"Set"),
+	CurrentCourseChangedMessageCommand=cmd(playcommand,"Set"),
 	CurrentStepsP1ChangedMessageCommand=cmd(playcommand,"Set"),
+	CurrentTrailP1ChangedMessageCommand=cmd(playcommand,"Set"),
 	CurrentStepsP2ChangedMessageCommand=cmd(playcommand,"Set"),
+	CurrentTrailP2ChangedMessageCommand=cmd(playcommand,"Set"),
 	OnCommand=cmd(shadowlength,1;zoom,0.75;diffuse,ThemeColor.Secondary)
 }
 
