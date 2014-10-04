@@ -23,7 +23,8 @@ local t = LoadFallbackB()
 -- LifeMeterBar
 for i, pn in pairs(PlayerNumber) do
 	if ShowStandardDecoration("LifeMeterBar" ..  ToEnumShortString(pn)) then
-		t[#t+1] = LoadActor(THEME:GetPathG(Var "LoadingScreen","lifemeterbar"), pn) .. {
+		local life_type = GAMESTATE:GetPlayerState(pn):GetPlayerOptions("ModsLevel_Song"):LifeSetting()
+		t[#t+1] = LoadActor(THEME:GetPathG(Var "LoadingScreen", "lifebar_" .. ToEnumShortString(life_type)), pn) .. {
 			InitCommand=function(self)
 				self:name("LifeMeterBar" .. ToEnumShortString(pn))
 				ActorUtil.LoadAllCommandsAndSetXY(self,Var "LoadingScreen")

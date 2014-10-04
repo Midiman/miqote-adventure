@@ -50,7 +50,8 @@ best_score[#best_score+1] = Def.ActorFrame {
 		end
 
 		local profile, scorelist
-		local str = 0
+		local best_score = 0
+		local best_grade = "Grade_Failed"
 		if SongOrCourse and StepsOrTrail then
 			local st = StepsOrTrail:GetStepsType()
 			local diff = StepsOrTrail:GetDifficulty()
@@ -72,36 +73,33 @@ best_score[#best_score+1] = Def.ActorFrame {
 			local scores = scorelist:GetHighScores()
 			local topscore = scores[1]
 			if topscore then
-				str = topscore:GetPercentDP()*100.0
-
+				best_score = topscore:GetPercentDP()*100.0
+				best_grade = topscore:GetGrade()
 			else
-				str = 0
+				best_score = 0
+				best_grade = "Grade_Failed"
 			end
 		else
-			str = 0
+			best_score = 0
+			best_grade = "Grade_Failed"
 		end;
-		c.CurrentBest:targetnumber(str)
+		c.CurrentBest:targetnumber(best_score)
+		c.GradeDisplay:SetGrade(best_grade)
 	end,
 	CurrentSongChangedMessageCommand=cmd(playcommand,"Set"),
 	CurrentStepsP1ChangedMessageCommand=cmd(playcommand,"Set"),
 	CurrentStepsP2ChangedMessageCommand=cmd(playcommand,"Set"),
 	--
-	Def.Quad {
-		InitCommand=cmd(zoomto,144,4),
-		OnCommand=cmd(diffuse,ThemeColor.TextDark)
+	Def.GradeDisplay {
+		Name="GradeDisplay",
+		InitCommand=cmd(Load,"GradeDisplay";y,-12),
+		OnCommand=cmd(zoom,0.75)
 	},
-	--
 	Def.RollingNumbers {
 		Name="CurrentBest",
 		File=THEME:GetPathF("Common","Normal"),
 		Text="-",
-		InitCommand=cmd(y,best_score_y_spacing*-1;Load,"RollingNumbersPaneDisplayPercent"),
-	},
-	LoadFont("Common Normal") .. {
-		Name="MachineBest",
-		Text=string.format("%02.02f%%", 100.00),
-		--
-		InitCommand=cmd(y,best_score_y_spacing)	
+		InitCommand=cmd(y,24;Load,"RollingNumbersPaneDisplayPercent"),
 	}
 }
 

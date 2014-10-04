@@ -3,6 +3,29 @@ local life_meter_width = 512
 local life_meter_height = 56
 local life_meter_outline = 4
 
+local function CreateSeperators()
+	local num_items = GAMESTATE:GetPlayerState(pn):GetPlayerOptions("ModsLevel_Preferred"):BatteryLives()
+
+	local function position(index)
+		return scale(index/num_items,0,1,-life_meter_width/2,life_meter_width/2)
+	end
+
+	local t = Def.ActorFrame {}
+
+	for i = 1, num_items-1 do
+		t[#t+1] = Def.ActorFrame {
+			InitCommand=cmd(x,position(i)),
+			--
+			Def.Quad {
+				InitCommand=cmd(zoomto,2,life_meter_height),
+				OnCommand=cmd(diffuse,Color.Black)
+			}
+		}
+	end
+
+	return t
+end
+
 local t = Def.ActorFrame {}
 
 t[#t+1] = Def.ActorFrame {
@@ -49,6 +72,11 @@ t[#t+1] = Def.ActorFrame {
 		DangerCommand=cmd(diffuseshift;effectclock,'beat';effectcolor1,PlayerColor(pn);effectcolor2,PlayerDarkColor(pn)),
 		DeadCommand=cmd(stopeffect)
 	},
+	LoadFont("Common Normal") .. {
+		Text="",
+		OnCommand=cmd(diffuse,Color.Black)
+	},
+	CreateSeperators()
 }
 
 return t

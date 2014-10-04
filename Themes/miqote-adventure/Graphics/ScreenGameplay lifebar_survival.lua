@@ -48,7 +48,7 @@ t[#t+1] = Def.ActorFrame {
 		AliveCommand=cmd(stopeffect),
 		DangerCommand=cmd(diffuseshift;effectclock,'beat';effectcolor1,PlayerColor(pn);effectcolor2,PlayerDarkColor(pn)),
 		DeadCommand=cmd(stopeffect)
-	}
+	},
 }
 
 return t

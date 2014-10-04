@@ -69,12 +69,22 @@ end
 
 -- Judgments
 for pn in ivalues(GAMESTATE:GetHumanPlayers()) do
-	t[#t+1] = StandardDecorationFromFile( "Judgments" .. ToEnumShortString(pn), "Judgments" )
+	t[#t+1] = LoadActor(THEME:GetPathG(Var "LoadingScreen","judgments"), pn) .. {
+		InitCommand=function(self)
+			self:name("Judgments" .. ToEnumShortString(pn))
+			ActorUtil.LoadAllCommandsAndSetXY(self,Var "LoadingScreen")
+		end
+	}
 end
 
 -- Bonus
 for pn in ivalues(GAMESTATE:GetHumanPlayers()) do
-	t[#t+1] = StandardDecorationFromFile( "Bonuses" .. ToEnumShortString(pn), "Bonuses" )
+	t[#t+1] = LoadActor(THEME:GetPathG(Var "LoadingScreen","bonuses"), pn) .. {
+		InitCommand=function(self)
+			self:name("Bonuses" .. ToEnumShortString(pn))
+			ActorUtil.LoadAllCommandsAndSetXY(self,Var "LoadingScreen")
+		end
+	}
 end
 
 -- SongTitle

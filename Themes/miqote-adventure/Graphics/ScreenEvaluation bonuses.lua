@@ -1,3 +1,5 @@
+local pn = ...
+
 local section_width = 384
 local section_height = 28
 local section_margin = 4
@@ -14,6 +16,17 @@ for i, rc in pairs(RadarCategory) do
 	if i < 6 then
 		t[#t+1] = Def.ActorFrame {
 			InitCommand=cmd(y,(i-1)*(section_height+section_y_spacing)),
+			OnCommand=cmd(playcommand,"Set"),
+			SetCommand=function(self)
+				local c = self:GetChildren()
+
+				local stats = STATSMAN:GetPlayedStageStats(1):GetPlayerStageStats(pn)
+				local possible = stats:GetRadarPossible():GetValue(rc)
+				local actual = stats:GetRadarActual():GetValue(rc)
+
+				c.RadarCategoryMeterPossible:zoomtowidth(meter_width * possible)
+				c.RadarCategoryMeterFill:zoomtowidth(meter_width * (actual * possible))
+			end,
 			--
 			Def.Quad {
 				Name="Background",
@@ -32,9 +45,14 @@ for i, rc in pairs(RadarCategory) do
 				OnCommand=cmd(diffuse,ThemeColor.BackgroundDark)
 			},
 			Def.Quad {
+				Name="RadarCategoryMeterPossible",
+				InitCommand=cmd(x,((section_width/2)-section_margin)-meter_width+2;zoomto,(meter_width/2)-2,(meter_height)-2;horizalign,left),
+				OnCommand=cmd(diffuse,ThemeColor.SecondaryDark)
+			},
+			Def.Quad {
 				Name="RadarCategoryMeterFill",
 				InitCommand=cmd(x,((section_width/2)-section_margin)-meter_width+2;zoomto,(meter_width/2)-2,(meter_height)-2;horizalign,left),
-				OnCommand=cmd(diffuse,ThemeColor.Secondary)
+				OnCommand=cmd(diffuse,PlayerColor(pn))
 			},
 		}
 	end

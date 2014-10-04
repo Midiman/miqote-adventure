@@ -49,6 +49,9 @@ t[#t+1] = Def.ActorFrame {
 		DangerCommand=cmd(diffuseshift;effectclock,'beat';effectcolor1,PlayerColor(pn);effectcolor2,PlayerDarkColor(pn)),
 		DeadCommand=cmd(stopeffect)
 	},
+	Def.ActorFrame {
+		Name="SeperatorHolder",
+	}
 }
 
 return t
