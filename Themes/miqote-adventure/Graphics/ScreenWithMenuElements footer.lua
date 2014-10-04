@@ -4,7 +4,7 @@ local t = Def.ActorFrame {}
 t[#t+1] = Def.ActorFrame {
 	InitCommand=cmd(x,SCREEN_CENTER_X),
 	Def.Quad {
-		InitCommand=cmd(vertalign,bottom;zoomto,SCREEN_WIDTH,72),
+		InitCommand=cmd(vertalign,bottom;zoomto,SCREEN_WIDTH+8,72),
 		OnCommand=cmd(diffuse,ThemeColor.Primary)
 	}
 }
@@ -13,7 +13,7 @@ t[#t+1] = Def.ActorFrame {
 t[#t+1] = Def.ActorFrame {
 	InitCommand=cmd(x,SCREEN_CENTER_X),
 	Def.Quad {
-		InitCommand=cmd(vertalign,bottom;zoomto,SCREEN_WIDTH,32),
+		InitCommand=cmd(vertalign,bottom;zoomto,SCREEN_WIDTH+8,32),
 		OnCommand=cmd(diffuse,Color.Black)
 	}
 }

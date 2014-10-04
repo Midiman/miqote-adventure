@@ -4,8 +4,11 @@ local t = Def.ActorFrame {}
 t[#t+1] = Def.ActorFrame {
 	InitCommand=cmd(x,SCREEN_CENTER_X),
 	Def.Quad {
-		InitCommand=cmd(vertalign,top;zoomto,SCREEN_WIDTH,80),
+		InitCommand=cmd(vertalign,top;zoomto,SCREEN_WIDTH+8,80),
 		OnCommand=cmd(diffuse,ThemeColor.Primary)
+	},
+	LoadActor(THEME:GetPathG("","_header")) .. {
+		InitCommand=cmd(vertalign,top)
 	}
 }
 
