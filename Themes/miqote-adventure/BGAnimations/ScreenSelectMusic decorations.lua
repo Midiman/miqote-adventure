@@ -32,6 +32,9 @@ t[#t+1] = StandardDecorationFromFileOptional("SortOrder", "SortOrder")
 -- DifficultyDisplay
 t[#t+1] = StandardDecorationFromFileOptional("DifficultyDisplay","DifficultyDisplay")
 
+-- SongCost
+t[#t+1] = StandardDecorationFromFileOptional("SongCost","SongCost")
+
 -- PaneDisplay
 for i, pn in pairs(PlayerNumber) do
 	if ShowStandardDecoration("PaneDisplay" ..  ToEnumShortString(pn)) then
