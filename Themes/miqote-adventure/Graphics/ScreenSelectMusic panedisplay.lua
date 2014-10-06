@@ -235,6 +235,11 @@ grades[#grades+1] = Def.ActorFrame {
 }
 
 local num_tiers = THEME:GetMetric("PlayerStageStats","NumGradeTiersUsed")
+local function tier_position_function( percent )
+	local v = percent ^ ( (percent+1) ^ ( (percent*math.log(1) ) ) )
+	return v
+end
+
 for i = 2, num_tiers do
 	local tier_position = THEME:GetMetric("PlayerStageStats",string.format("GradePercentTier%02i",i))
 
