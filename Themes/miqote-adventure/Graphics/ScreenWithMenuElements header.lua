@@ -7,9 +7,6 @@ t[#t+1] = Def.ActorFrame {
 		InitCommand=cmd(vertalign,top;zoomto,SCREEN_WIDTH+8,80),
 		OnCommand=cmd(diffuse,ThemeColor.Primary)
 	},
-	LoadActor(THEME:GetPathG("","_header")) .. {
-		InitCommand=cmd(vertalign,top)
-	}
 }
 
 -- Content
@@ -22,7 +19,7 @@ t[#t+1] = Def.ActorFrame {
 	},
 	-- Header
 	LoadFont("Common Normal") .. {
-		Text="SELECT MUSIC",
+		Text=THEME:GetString(Var "LoadingScreen", "HeaderText"),
 		InitCommand=cmd(x,SCREEN_LEFT+32;y,-8;horizalign,left),
 		OnCommand=cmd(shadowlength,1)
 	},

@@ -3,7 +3,8 @@ local t = Def.ActorFrame { FOV = 90 }
 -- Fill
 t[#t+1] = Def.ActorFrame {
 	InitCommand=cmd(Center),
-	Def.Quad {
+
+	LoadActor("_road") .. {
 		InitCommand=cmd(scaletoclipped,SCREEN_WIDTH,SCREEN_HEIGHT),
 		OnCommand=cmd(diffuse,ThemeColor.BackgroundDark)
 	}
