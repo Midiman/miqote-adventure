@@ -4,7 +4,7 @@ local t = Def.ActorFrame { FOV = 90 }
 t[#t+1] = Def.ActorFrame {
 	InitCommand=cmd(Center),
 
-	LoadActor("_road") .. {
+	LoadActor("_cloud") .. {
 		InitCommand=cmd(scaletoclipped,SCREEN_WIDTH,SCREEN_HEIGHT),
 		OnCommand=cmd(diffuse,ThemeColor.BackgroundDark)
 	}
@@ -18,10 +18,10 @@ t[#t+1] = LoadActor("rings") .. {
 
 -- Scanline
 t[#t+1] = Def.ActorFrame {
-	InitCommand=cmd(Center;addy,0.5),
+	InitCommand=cmd(Center),
 	LoadActor("_texture scanline") .. {
-		InitCommand=cmd(SetTextureFiltering,false;zoomto,SCREEN_WIDTH,SCREEN_HEIGHT;customtexturerect,0,0,SCREEN_WIDTH/256,SCREEN_HEIGHT/1024),
-		OnCommand=cmd(diffuse,ThemeColor.Background;diffusealpha,0.25),
+		InitCommand=cmd(SetTextureFiltering,true;zoomto,SCREEN_WIDTH,SCREEN_HEIGHT;customtexturerect,0,0,SCREEN_WIDTH/256,SCREEN_HEIGHT/256),
+		OnCommand=cmd(diffuse,Color.Black;diffusealpha,0.5),
 	}
 }
 --

@@ -1,18 +1,21 @@
 local pn = ...
 local t = Def.ActorFrame {}
 
+local background_width = 320
+local background_height = 128
+
 -- Background
 local background = Def.ActorFrame {}
 background[#background+1] = Def.ActorFrame {
 	Name="PaneDisplayBackground",
 	Def.Quad {
 		Name="Background",
-		InitCommand=cmd(zoomto,448,128),
+		InitCommand=cmd(zoomto,background_width,background_height),
 		OnCommand=cmd(diffuse,ThemeColor.Background)
 	},
 	Def.Quad {
 		Name="Header",
-		InitCommand=cmd(zoomto,448-16,2;y,-40),
+		InitCommand=cmd(zoomto,background_width-16,2;y,-32),
 		OnCommand=cmd(diffuse,ThemeColor.BackgroundDark)
 	},
 }
@@ -21,19 +24,19 @@ background[#background+1] = Def.ActorFrame {
 local player_name = Def.ActorFrame {}
 player_name[#player_name+1] = Def.ActorFrame {
 	Name="PlayerName",
-	InitCommand=cmd(x,-(448-48)/2;y,-52),
+	InitCommand=cmd(x,-(background_width-48)/2;y,-48),
 	--
-	LoadFont("Common Normal") .. {
+	LoadFont("Common Header") .. {
 		Text=PROFILEMAN:GetPlayerName(pn),
 		InitCommand=cmd(x,-16;horizalign,left),
-		OnCommand=cmd(zoom,0.75;diffuse,PlayerColor(pn))
+		OnCommand=cmd(zoom,0.875;diffuse,PlayerColor(pn);shadowlength,1)
 	}
 }
 
 -- PlayerBest
 local best_score = Def.ActorFrame {}
-local best_score_x_start = -(448/24)/2 - 144
-local best_score_y_start = -6
+local best_score_x_start = -(background_width/2) + 48
+local best_score_y_start = 4
 local best_score_y_spacing = 18
 
 best_score[#best_score+1] = Def.ActorFrame {
@@ -107,10 +110,11 @@ best_score[#best_score+1] = Def.ActorFrame {
 
 -- Radar Texts
 local radar_text = Def.ActorFrame {}
-local radar_x_start = -(448-24)/2 + 128
-local radar_y_start = -28
-local radar_x_spacing = 128
+local radar_x_start = -(background_width-24)/2 + 80
+local radar_y_start = -20
+local radar_x_spacing = 120
 local radar_y_spacing = 17
+local radar_value_offset_x = 96
 local radar_rows = 4
 local radar_start = 6
 
@@ -157,7 +161,7 @@ for i=radar_start,#RadarCategory do
 			Name="Value",
 			Text="",
 			--
-			InitCommand=cmd(horizalign,right;x,128-8),
+			InitCommand=cmd(horizalign,right;x,radar_value_offset_x),
 			OnCommand=cmd(diffuse,ThemeColor.Secondary;zoom,0.5),
 		}
 	}
@@ -165,7 +169,7 @@ end
 
 -- Grade Bar
 local grade_start_y = 52
-local grade_meter_width = (448-16)
+local grade_meter_width = (background_width-16)
 local grade_meter_height = 12
 
 local grades = Def.ActorFrame {}
@@ -215,7 +219,7 @@ grades[#grades+1] = Def.ActorFrame {
 		else
 			best_score = 0
 		end;
-		c.GradeMeterFill:zoomtowidth(best_score*(448-16))
+		c.GradeMeterFill:zoomtowidth(best_score*(background_width-16))
 	end,
 	CurrentSongChangedMessageCommand=cmd(playcommand,"Set"),
 	CurrentStepsP1ChangedMessageCommand=cmd(playcommand,"Set"),
@@ -223,7 +227,7 @@ grades[#grades+1] = Def.ActorFrame {
 	-- Backing
 	Def.Quad {
 		Name="Background",
-		InitCommand=cmd(zoomto,448-16,grade_meter_height),
+		InitCommand=cmd(zoomto,background_width-16,grade_meter_height),
 		OnCommand=cmd(diffuse,Color.Black)
 	},
 	-- Fill
@@ -243,8 +247,10 @@ end
 for i = 2, num_tiers do
 	local tier_position = THEME:GetMetric("PlayerStageStats",string.format("GradePercentTier%02i",i))
 
+	-- Thanks Kyzentun
+	-- score^((score+1)^((score*2.718281828459045)))
 	local function position(i)
-		return scale(i,0,1,-grade_meter_width/2,grade_meter_width/2)
+		return scale(i^((i+1)^((i*2.718281828459045))),0,1,-grade_meter_width/2,grade_meter_width/2)
 	end
 
 	grades[#grades+1] = Def.ActorFrame {
@@ -256,8 +262,8 @@ for i = 2, num_tiers do
 		},
 		LoadFont("Common Normal") .. {
 			Text=THEME:GetString("Grade",string.format("Tier%02i",i)),
-			InitCommand=cmd(horizalign,right;y,-14),
-			OnCommand=cmd(zoom,0.5)
+			InitCommand=cmd(horizalign,right;x,-5;),
+			OnCommand=cmd(zoom,0.375;shadowlength,1)
 		}
 	}
 end
@@ -267,5 +273,17 @@ t[#t+1] = player_name
 t[#t+1] = best_score
 t[#t+1] = radar_text
 t[#t+1] = grades
+
+t.PlayerJoinedMessageCommand=function(self, params)
+	if params.Player == pn then
+		self:playcommand("TweenOn");
+	end
+end
+
+t.PlayerUnjoinedMessageCommand=function(self, params)
+	if params.Player == pn then
+		self:playcommand("TweenOff");
+	end
+end
 
 return t

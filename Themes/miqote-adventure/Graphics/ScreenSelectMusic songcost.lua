@@ -12,6 +12,7 @@ t[#t+1] = Def.ActorFrame {
 		local song = GAMESTATE:GetCurrentSong()
 
 		if song == nil then
+			self:playcommand("None");
 			return
 		end
 
@@ -37,6 +38,7 @@ t[#t+1] = Def.ActorFrame {
 		Text="!!",
 		InitCommand=cmd(shadowlength,1),
 		OnCommand=cmd(zoom,0.75),
+		NoneCommand=cmd(finishtweening;visible,false),
 		NormalCommand=cmd(finishtweening;visible,false),
 		LongCommand=cmd(finishtweening;visible,true),
 		MarathonCommand=cmd(finishtweening;visible,true),
