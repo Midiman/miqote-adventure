@@ -24,7 +24,8 @@ local t = LoadFallbackB()
 t[#t+1] = StandardDecorationFromFileOptional("TextBanner", "TextBanner")
 
 -- BPM
-t[#t+1] = StandardDecorationFromFileOptional("BPM", "BPM")
+t[#t+1] = StandardDecorationFromFileOptional("BPMDisplay", "BPMDisplay")
+t[#t+1] = StandardDecorationFromFileOptional("BPMLabel", "BPMLabel")
 
 -- SortOrder
 t[#t+1] = StandardDecorationFromFileOptional("SortOrder", "SortOrder")

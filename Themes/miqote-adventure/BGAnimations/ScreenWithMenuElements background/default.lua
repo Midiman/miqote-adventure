@@ -16,6 +16,21 @@ t[#t+1] = LoadActor("rings") .. {
 	OnCommand=cmd(rotationy,22.5;bob;effectmagnitude,0,0,32;effectperiod,8),
 }
 
+-- Grids
+t[#t+1] = Def.ActorFrame {
+	FOV=90,
+	InitCommand=cmd(x,SCREEN_CENTER_X),
+	--
+	LoadActor(THEME:GetPathG("_texture","grid")) .. {
+		InitCommand=cmd(y,64;rotationx,90*0.875;vertalign,top;scaletoclipped,(2048),128),
+		OnCommand=cmd(diffuse,ThemeColor.PrimaryDark;customtexturerect,0,0,2048/32,128/32;texcoordvelocity,-1,0;fadebottom,1)
+	},
+	LoadActor(THEME:GetPathG("_texture","grid")) .. {
+		InitCommand=cmd(y,SCREEN_BOTTOM-72;rotationx,-90*0.875;vertalign,bottom;scaletoclipped,(2048),128),
+		OnCommand=cmd(diffuse,ThemeColor.PrimaryDark;customtexturerect,0,0,2048/32,128/32;texcoordvelocity,-1,0;fadetop,1)
+	}
+}
+
 -- Scanline
 t[#t+1] = Def.ActorFrame {
 	InitCommand=cmd(Center),

@@ -4,6 +4,14 @@ local t = Def.ActorFrame {}
 local background_width = 320
 local background_height = 128
 
+local function getPlayersName(pn)
+	local s = PROFILEMAN:GetPlayerName(pn)
+	if s == "" then
+		return PlayerNumberToString(pn)
+	end
+	return s
+end
+
 -- Background
 local background = Def.ActorFrame {}
 background[#background+1] = Def.ActorFrame {
@@ -27,7 +35,7 @@ player_name[#player_name+1] = Def.ActorFrame {
 	InitCommand=cmd(x,-(background_width-48)/2;y,-48),
 	--
 	LoadFont("Common Header") .. {
-		Text=PROFILEMAN:GetPlayerName(pn),
+		Text=getPlayersName(pn),
 		InitCommand=cmd(x,-16;horizalign,left),
 		OnCommand=cmd(zoom,0.875;diffuse,PlayerColor(pn);shadowlength,1)
 	}

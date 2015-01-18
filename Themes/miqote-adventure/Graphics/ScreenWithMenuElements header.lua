@@ -21,7 +21,7 @@ t[#t+1] = Def.ActorFrame {
 	-- Big Grid
 	LoadActor(THEME:GetPathG("_texture","grid")) .. {
 		InitCommand=cmd(vertalign,top;zoomto,SCREEN_WIDTH+8,(header_height-header_bottom_height)),
-		OnCommand=cmd(skewx,-8/SCREEN_WIDTH	;diffuse,ThemeColor.Primary;diffusealpha,0.5;texcoordvelocity,-0.125,0;customtexturerect,0,0,(SCREEN_WIDTH+8)/32,(header_height-header_bottom_height)/32)
+		OnCommand=cmd(visible,false;skewx,-8/SCREEN_WIDTH	;diffuse,ThemeColor.Primary;diffusealpha,0.5;texcoordvelocity,-0.125,0;customtexturerect,0,0,(SCREEN_WIDTH+8)/32,(header_height-header_bottom_height)/32)
 	},
 	-- Fade To Top
 	Def.Quad {

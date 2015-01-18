@@ -46,7 +46,7 @@ for i, pn in pairs(PlayerNumber) do
 end
 
 -- BPM
-t[#t+1] = StandardDecorationFromFileOptional("BPM","BPM")
+t[#t+1] = StandardDecorationFromFileOptional("BPMDisplay","BPMDisplay")
 
 -- SongMeter
 t[#t+1] = StandardDecorationFromFileOptional("SongMeter","SongMeter")
