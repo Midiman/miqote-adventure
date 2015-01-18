@@ -1,7 +1,10 @@
 -- Define the widths and heights of our main menus, for easy plotting later
 
-_header_height = 80
+_header_height = 64
 _footer_height = 72
+
+MENU_HEADER_HEIGHT = _header_height
+MENU_FOOTER_HEIGHT = _footer_height
 
 MENU_TOP = _header_height
 MENU_BOTTOM = SCREEN_BOTTOM - _footer_height

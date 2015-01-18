@@ -22,11 +22,11 @@ t[#t+1] = Def.ActorFrame {
 	InitCommand=cmd(x,SCREEN_CENTER_X),
 	--
 	LoadActor(THEME:GetPathG("_texture","grid")) .. {
-		InitCommand=cmd(y,64;rotationx,90*0.875;vertalign,top;scaletoclipped,(2048),128),
+		InitCommand=cmd(y,MENU_TOP;rotationx,90*0.875;vertalign,top;scaletoclipped,(2048),128),
 		OnCommand=cmd(diffuse,ThemeColor.PrimaryDark;customtexturerect,0,0,2048/32,128/32;texcoordvelocity,-1,0;fadebottom,1)
 	},
 	LoadActor(THEME:GetPathG("_texture","grid")) .. {
-		InitCommand=cmd(y,SCREEN_BOTTOM-72;rotationx,-90*0.875;vertalign,bottom;scaletoclipped,(2048),128),
+		InitCommand=cmd(y,MENU_BOTTOM;rotationx,-90*0.875;vertalign,bottom;scaletoclipped,(2048),128),
 		OnCommand=cmd(diffuse,ThemeColor.PrimaryDark;customtexturerect,0,0,2048/32,128/32;texcoordvelocity,-1,0;fadetop,1)
 	}
 }
@@ -36,7 +36,7 @@ t[#t+1] = Def.ActorFrame {
 	InitCommand=cmd(Center),
 	LoadActor("_texture scanline") .. {
 		InitCommand=cmd(SetTextureFiltering,true;zoomto,SCREEN_WIDTH,SCREEN_HEIGHT;customtexturerect,0,0,SCREEN_WIDTH/256,SCREEN_HEIGHT/256),
-		OnCommand=cmd(diffuse,Color.Black;diffusealpha,0.5),
+		OnCommand=cmd(diffuse,Color.Black;diffusealpha,0.25),
 	}
 }
 --
