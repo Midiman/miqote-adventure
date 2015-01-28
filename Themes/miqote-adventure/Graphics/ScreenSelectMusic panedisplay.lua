@@ -34,10 +34,10 @@ player_name[#player_name+1] = Def.ActorFrame {
 	Name="PlayerName",
 	InitCommand=cmd(x,-(background_width-48)/2;y,-48),
 	--
-	LoadFont("Common Header") .. {
+	LoadFont("Common Large") .. {
 		Text=getPlayersName(pn),
 		InitCommand=cmd(x,-16;horizalign,left),
-		OnCommand=cmd(zoom,0.875;diffuse,PlayerColor(pn);shadowlength,1)
+		OnCommand=cmd(zoom,0.75;diffuse,PlayerColor(pn);shadowlength,1)
 	}
 }
 

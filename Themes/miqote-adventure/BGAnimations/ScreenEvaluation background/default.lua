@@ -4,32 +4,36 @@ local t = Def.ActorFrame { FOV = 90 }
 t[#t+1] = Def.ActorFrame {
 	InitCommand=cmd(Center),
 
-	LoadActor(THEME:GetPathB("","_cloud")) .. {
+	LoadActor(THEME:GetPathB("","_road")) .. {
 		InitCommand=cmd(scaletoclipped,SCREEN_WIDTH,SCREEN_HEIGHT),
 		OnCommand=cmd(diffuse,ThemeColor.BackgroundDark)
 	}
 }
 
--- Rings
-t[#t+1] = LoadActor("rings") .. {
-	InitCommand=cmd(Center;z,-32),
-	OnCommand=cmd(rotationy,22.5;bob;effectmagnitude,0,0,32;effectperiod,8),
-}
+-- Cat
+t[#t+1] = Def.ActorFrame {
+	InitCommand=cmd(Center),
 
+	LoadActor("_bus") .. {
+		InitCommand=cmd(scaletoclipped,SCREEN_WIDTH,SCREEN_HEIGHT),
+		OnCommand=cmd(diffuse,ThemeColor.PrimaryDark;blend,'BlendMode_Add';diffusealpha,0.125)
+	},
+}
 -- Grids
 t[#t+1] = Def.ActorFrame {
 	FOV=90,
 	InitCommand=cmd(x,SCREEN_CENTER_X),
 	--
 	LoadActor(THEME:GetPathG("_texture","grid")) .. {
-		InitCommand=cmd(y,MENU_TOP;rotationx,90*0.875;vertalign,top;scaletoclipped,(2048),128),
+		InitCommand=cmd(y,MENU_TOP;vertalign,top;scaletoclipped,(2048),128),
 		OnCommand=cmd(diffuse,ThemeColor.PrimaryDark;customtexturerect,0,0,2048/32,128/32;texcoordvelocity,-1,0;fadebottom,1)
 	},
 	LoadActor(THEME:GetPathG("_texture","grid")) .. {
-		InitCommand=cmd(y,MENU_BOTTOM;rotationx,-90*0.875;vertalign,bottom;scaletoclipped,(2048),128),
+		InitCommand=cmd(y,MENU_BOTTOM;vertalign,bottom;scaletoclipped,(2048),128),
 		OnCommand=cmd(diffuse,ThemeColor.PrimaryDark;customtexturerect,0,0,2048/32,128/32;texcoordvelocity,-1,0;fadetop,1)
 	}
 }
+
 
 -- Scanline
 t[#t+1] = Def.ActorFrame {

@@ -22,11 +22,16 @@ local function NumEdit( in_Song, in_StepsType )
 	end
 end
 
-local x_spacing = 96
+local cell_width = 96
+local x_spacing = cell_width + 26
+
 local difficulty_frame = Def.ActorFrame {}
 
 for i,diff in pairs(Difficulty) do
 	local x_pos = (i-1) * x_spacing
+	local iconColor = GameColor.Difficulty[diff]
+	
+	local iconColorDark = ColorDarkTone( iconColor )
 	--
 	difficulty_frame[#difficulty_frame+1] = Def.ActorFrame {
 		InitCommand=cmd(x,x_pos),
@@ -121,26 +126,32 @@ for i,diff in pairs(Difficulty) do
 		CurrentStepsP2ChangedMessageCommand=cmd(playcommand,"Set"),
 		CurrentTrailP2ChangedMessageCommand=cmd(playcommand,"Set"),
 		--
-		Def.Quad {
+		LoadActor(THEME:GetPathG("_difficultyDisplay","cell")) .. {
 			Name="Background",
-			InitCommand=cmd(zoomto,x_spacing,48),
-			EnabledCommand=cmd(diffuse,GameColor.Difficulty[diff]),
-			DisabledCommand=cmd(diffuse,ColorDarkTone( GameColor.Difficulty[diff]) ),
+			InitCommand=cmd(),
+			AppealCommand=cmd(diffuseshift;effectcolor1,iconColorDark;effectcolor2,iconColor;effecttiming,0.125,0,0.375,1.5;effectoffset,1 - i*0.1;effectclock,'timerglobal'),
+			EnabledCommand=cmd(stoptweening;decelerate,TIME_SHORT;diffuse,iconColorDark),
+			DisabledCommand=cmd(stoptweening;stopeffect;linear,TIME_NORMAL;diffuse,ThemeColor.Background),
+			OffCommand=cmd(finishtweening)
+		},
+		Def.RollingNumbers {
+			Name="Meter",
+			File=THEME:GetPathF("Common","Large"),
+			Text="-",
+			InitCommand=cmd(shadowlength,1;Load,"RollingNumbersPaneDisplayMeter"),
+			OnCommand=cmd(horizalign,right;x,cell_width/2 - 2;skewx,-0.125),
+			EnabledCommand=cmd(diffuse,iconColor),
+			DisabledCommand=cmd(diffuse,color("#7C7C7C")),
+			OffCommand=cmd(finishtweening)
 		},
 		LoadFont("Common Normal") .. {
 			Name="Description",
 			Text=ToEnumShortString(diff),
-			InitCommand=cmd(zoom,0.5;shadowlength,1;y,12),
-			EnabledCommand=cmd(diffuse,ThemeColor.Text),
-			DisabledCommand=cmd(diffuse,color("#7C7C7C"))
-		},
-		Def.RollingNumbers {
-			Name="Meter",
-			File=THEME:GetPathF("Common","Normal"),
-			Text="-",
-			InitCommand=cmd(shadowlength,1;y,-10;Load,"RollingNumbersPaneDisplayMeter"),
-			EnabledCommand=cmd(diffuse,ThemeColor.Text),
-			DisabledCommand=cmd(diffuse,color("#7C7C7C"))
+			InitCommand=cmd(zoom,0.5;shadowlength,1;x,-cell_width/2 + 2;y,12),
+			OnCommand=cmd(horizalign,left),
+			EnabledCommand=cmd(diffuse,iconColor;textglowmode,'TextGlowMode_Inner';glow,color("1,1,1,0.875")),
+			DisabledCommand=cmd(diffuse,color("#7C7C7C")),
+			OffCommand=cmd(finishtweening)
 		}
 	}
 end
@@ -149,12 +160,11 @@ local y_offset = -40
 local cursor_frame = Def.ActorFrame {}
 
 for i,pn in pairs(PlayerNumber) do
-	local x_offset = 20
-	local pn_mod = (pn == PLAYER_1) and -1 or 1
-	local x_pos = x_offset * pn_mod
+	local pn_mod = (pn == PLAYER_1) and 1 or -1
+	local pn_y_offset = (pn == PLAYER_1) and 0 or 80
 
 	cursor_frame[#cursor_frame+1] = Def.ActorFrame {
-		InitCommand=cmd(y,y_offset),
+		InitCommand=cmd(y,y_offset + pn_y_offset),
 		BeginCommand=function(self)
 			self:visible( GAMESTATE:IsHumanPlayer(pn) )
 		end,
@@ -170,7 +180,7 @@ for i,pn in pairs(PlayerNumber) do
 			
 			local id = Enum.Reverse(Difficulty)[diff]
 			c.Cursor:playcommand("Tween")
-			c.Cursor:x((id * x_spacing) + x_pos)
+			c.Cursor:x((id * x_spacing))
 		end,
 		CurrentSongChangedMessageCommand=cmd(playcommand,"Set"),
 		CurrentCourseChangedMessageCommand=cmd(playcommand,"Set"),
@@ -192,17 +202,27 @@ for i,pn in pairs(PlayerNumber) do
 			end
 		end,
 		--
-		LoadFont("Common Normal") .. {
+
+		Def.ActorFrame {
 			Name="Cursor",
-			Text=ToEnumShortString(pn),
-			InitCommand=cmd(shadowlength,1),
-			OnCommand=cmd(diffuse,PlayerColor(pn)),
-			--
 			TweenCommand=function(self)
 				self:stoptweening()
 				self:smooth( TIME_SHORT )
 			end,
-		},
+			LoadActor(THEME:GetPathG("_common","arrow")) .. {
+				InitCommand=cmd(y,18 * pn_mod;x,-24 * pn_mod),
+				OnCommand=cmd(diffuse,PlayerColor(pn);zoom,0.5;zoomy,0.5 * -pn_mod)
+			},
+			Def.Quad {
+				InitCommand=cmd(zoomto,cell_width,24),
+				OnCommand=cmd(diffuse,PlayerColor(pn))
+			},
+			LoadFont("Common Normal") .. {
+				Text=ToEnumShortString(pn),
+				InitCommand=cmd(shadowlength,1),
+				OnCommand=cmd(zoom,0.75),
+			},
+		}
 	}
 end
 

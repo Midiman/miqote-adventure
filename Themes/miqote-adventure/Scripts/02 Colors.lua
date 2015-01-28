@@ -5,6 +5,8 @@ ThemeColor = {
 	PrimaryDark		= color("#da4453"),
 	Secondary		= color("#ffbb33"),
 	SecondaryDark	= color("#ff8800"),
+	Decoration		= color("#efebe9"),
+	DecorationDark	= color("#cecdc3"),
 	Background		= color("#656d78"),
 	BackgroundDark	= color("#434a54"),
 }
