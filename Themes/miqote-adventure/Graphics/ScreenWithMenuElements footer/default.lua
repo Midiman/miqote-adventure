@@ -5,7 +5,7 @@ local footer_height = MENU_FOOTER_HEIGHT
 
 local wisp_width = 320
 
-t[#t+1] = Def.ActorFrame {
+local footer_background = Def.ActorFrame {
 	InitCommand=cmd(x,SCREEN_CENTER_X),
 	-- MASK
 	Def.Quad {
@@ -40,19 +40,33 @@ t[#t+1] = Def.ActorFrame {
 	}
 }
 
-t[#t+1] = Def.ActorFrame {
-	InitCommand=cmd(x,SCREEN_CENTER_X;y,-footer_height+8),
+local footer_frame = Def.ActorFrame {
+	InitCommand=cmd(x,SCREEN_CENTER_X;y,-footer_height/2 -1 ),
 	OnCommand=cmd(),
 	--
+	Def.Quad {
+		InitCommand=cmd(zoomto,SCREEN_WIDTH,1;y,4),
+		OnCommand=cmd(diffusealpha,0.375)
+	},
 	LoadActor("_seperator fill") .. {
-		OnCommand=cmd(diffuse,ThemeColor.Decoration)
+		OnCommand=cmd(diffuse,ThemeColor.DecorationDark)
 	},
 	LoadActor("_seperator frame") .. {
+		OnCommand=cmd(diffuse,ThemeColor.Decoration)
+	}
+}
+
+local footer_temp = Def.ActorFrame {
+	InitCommand=cmd(x,SCREEN_CENTER_X),
+	--
+	Def.Quad {
+		InitCommand=cmd(vertalign,bottom;zoomto,SCREEN_WIDTH,MENU_FOOTER_HEIGHT),
+		OnCommand=cmd(diffuse,ThemeColor.PrimaryDark)
 	}
 }
 
 -- System
-t[#t+1] = Def.ActorFrame {
+local footer_system = Def.ActorFrame {
 	InitCommand=cmd(x,SCREEN_CENTER_X),
 	Def.Quad {
 		InitCommand=cmd(vertalign,bottom;zoomto,SCREEN_WIDTH+8,system_height),
@@ -60,5 +74,8 @@ t[#t+1] = Def.ActorFrame {
 	}
 }
 
+
+t[#t+1] = footer_temp
+t[#t+1] = footer_system
 
 return t

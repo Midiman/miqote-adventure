@@ -5,7 +5,7 @@ local header_height = MENU_HEADER_HEIGHT
 local wisp_width = 320
 
 -- Background
-t[#t+1] = Def.ActorFrame {
+local header_background = Def.ActorFrame {
 	InitCommand=cmd(x,SCREEN_CENTER_X),
 	-- MASK
 	Def.Quad {
@@ -46,20 +46,18 @@ t[#t+1] = Def.ActorFrame {
 	}
 }
 -- Overhang
-t[#t+1] = Def.ActorFrame {
-	InitCommand=cmd(x,SCREEN_CENTER_X;y,40),
+local header_overlay = Def.ActorFrame {
+	InitCommand=cmd(x,SCREEN_CENTER_X;y,35),
 	--
 	LoadActor("_seperator fill") .. {
-		OnCommand=cmd(diffuse,ThemeColor.Decoration)
+		OnCommand=cmd(diffuse,ThemeColor.DecorationDark)
 	},
-	LoadActor("_seperator frame"),
-	LoadActor("_hex fill") .. {
+	LoadActor("_seperator frame") .. {
 		OnCommand=cmd(diffuse,ThemeColor.Decoration)
-	},
-	LoadActor("_hex frame")
+	}
 }
 -- Content
-t[#t+1] = Def.ActorFrame {
+local header_text = Def.ActorFrame {
 	InitCommand=cmd(y,MENU_HEADER_HEIGHT/2),
 	-- Header
 	LoadFont("Common Header") .. {
@@ -75,5 +73,16 @@ t[#t+1] = Def.ActorFrame {
 	}
 }
 
+local header_temp = Def.ActorFrame {
+	InitCommand=cmd(x,SCREEN_CENTER_X;y,MENU_HEADER_HEIGHT/2),
+	--
+	Def.Quad {
+		InitCommand=cmd(zoomto,SCREEN_WIDTH,MENU_HEADER_HEIGHT),
+		OnCommand=cmd(diffuse,ThemeColor.PrimaryDark)
+	}
+}
+
+t[#t+1] = header_temp
+t[#t+1] = header_text
 
 return t

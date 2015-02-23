@@ -1,5 +1,4 @@
-local t = Def.ActorFrame {};
-
+local t = Def.ActorFrame {}
 
 local arrows_x = THEME:GetMetric(Var "LoadingScreen", "MusicWheelX")
 local arrows_Y = THEME:GetMetric(Var "LoadingScreen", "MusicWheelY")

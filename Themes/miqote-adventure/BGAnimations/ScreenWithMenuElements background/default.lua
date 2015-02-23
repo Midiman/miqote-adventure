@@ -19,15 +19,15 @@ t[#t+1] = LoadActor("rings") .. {
 -- Grids
 t[#t+1] = Def.ActorFrame {
 	FOV=90,
-	InitCommand=cmd(x,SCREEN_CENTER_X),
+	InitCommand=cmd(x,SCREEN_CENTER_X;visible,false),
 	--
 	LoadActor(THEME:GetPathG("_texture","grid")) .. {
-		InitCommand=cmd(y,MENU_TOP;rotationx,90*0.875;vertalign,top;scaletoclipped,(2048),128),
-		OnCommand=cmd(diffuse,ThemeColor.PrimaryDark;customtexturerect,0,0,2048/32,128/32;texcoordvelocity,-1,0;fadebottom,1)
+		InitCommand=cmd(y,SCREEN_TOP;vertalign,top;scaletoclipped,(2048),128),
+		OnCommand=cmd(diffuse,ThemeColor.PrimaryDark;customtexturerect,0,0,2048/16,128/16;texcoordvelocity,-1,0;fadebottom,1)
 	},
 	LoadActor(THEME:GetPathG("_texture","grid")) .. {
-		InitCommand=cmd(y,MENU_BOTTOM;rotationx,-90*0.875;vertalign,bottom;scaletoclipped,(2048),128),
-		OnCommand=cmd(diffuse,ThemeColor.PrimaryDark;customtexturerect,0,0,2048/32,128/32;texcoordvelocity,-1,0;fadetop,1)
+		InitCommand=cmd(y,SCREEN_BOTTOM;vertalign,bottom;scaletoclipped,(2048),128),
+		OnCommand=cmd(diffuse,ThemeColor.PrimaryDark;customtexturerect,0,0,2048/16,128/16;texcoordvelocity,-1,0;fadetop,1)
 	}
 }
 

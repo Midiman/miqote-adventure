@@ -22,19 +22,27 @@ local function NumEdit( in_Song, in_StepsType )
 	end
 end
 
-local cell_width = 96
-local x_spacing = cell_width + 26
+local cell_width = 82
+local x_margin = 38
+local x_spacing = cell_width + x_margin
+local y_spacing = 30
+local difficulty_num_slots = 14
+local difficulty_slot_width = 36
+local difficulty_slot_x = 60
+local difficulty_slot_spacing = 40
+
 
 local difficulty_frame = Def.ActorFrame {}
 
 for i,diff in pairs(Difficulty) do
-	local x_pos = (i-1) * x_spacing
+	local y_pos = (i-1) * y_spacing
+	local y_offset = (i%2 == 0) and 16 or 0
 	local iconColor = GameColor.Difficulty[diff]
-	
+	local iconColorMid = ColorMidTone( iconColor )
 	local iconColorDark = ColorDarkTone( iconColor )
 	--
-	difficulty_frame[#difficulty_frame+1] = Def.ActorFrame {
-		InitCommand=cmd(x,x_pos),
+	local base = Def.ActorFrame {
+		InitCommand=cmd(y,y_pos),
 		OnCommand=cmd(playcommand,"Set"),
 		SetCommand=function(self)
 			local c = self:GetChildren()
@@ -107,7 +115,7 @@ for i,diff in pairs(Difficulty) do
 			
 			c.Meter:targetnumber(step:GetMeter())
 
-			self:playcommand("Enabled")
+			self:playcommand("Enabled",{ Meter=step:GetMeter(), Difficulty=diff})
 			self:playcommand("TweenOn")
 
 			if not IsCourse then
@@ -126,34 +134,69 @@ for i,diff in pairs(Difficulty) do
 		CurrentStepsP2ChangedMessageCommand=cmd(playcommand,"Set"),
 		CurrentTrailP2ChangedMessageCommand=cmd(playcommand,"Set"),
 		--
-		LoadActor(THEME:GetPathG("_difficultyDisplay","cell")) .. {
+		Def.ActorFrame { 
 			Name="Background",
-			InitCommand=cmd(),
-			AppealCommand=cmd(diffuseshift;effectcolor1,iconColorDark;effectcolor2,iconColor;effecttiming,0.125,0,0.375,1.5;effectoffset,1 - i*0.1;effectclock,'timerglobal'),
-			EnabledCommand=cmd(stoptweening;decelerate,TIME_SHORT;diffuse,iconColorDark),
-			DisabledCommand=cmd(stoptweening;stopeffect;linear,TIME_NORMAL;diffuse,ThemeColor.Background),
-			OffCommand=cmd(finishtweening)
+			Def.Quad {
+				InitCommand=cmd(x,-cell_width/2 - 23;zoomto,320,26),
+				OnCommand=cmd(horizalign,left;faderight,1),
+				AppealCommand=cmd(),
+				EnabledCommand=cmd(diffuse,iconColorDark),
+				DisabledCommand=cmd(diffuse,ThemeColor.DecorationBackground),
+				OffCommand=(finishtweening)
+			}
+			--[[
+			LoadActor(THEME:GetPathB("_frame","3x3"),"ascent marker",cell_width,8) .. {
+				Name="NameFrameOverlay",
+				InitCommand=cmd(),
+				AppealCommand=cmd(glowshift;effectcolor1,color("1,1,1,0");effectcolor2,color("1,1,1,0.5");effecttiming,0.125,0,0.375,1.5;effectoffset,1 - i*0.1;effectclock,'timerglobal'),
+				EnabledCommand=cmd(stoptweening;decelerate,TIME_SHORT;diffuse,iconColor;queuecommand,"Appeal"),
+				DisabledCommand=cmd(stoptweening;stopeffect;linear,TIME_NORMAL;diffuse,ThemeColor.DecorationBackground),
+				OffCommand=cmd(finishtweening)
+			}
+			]]
 		},
 		Def.RollingNumbers {
 			Name="Meter",
 			File=THEME:GetPathF("Common","Large"),
 			Text="-",
-			InitCommand=cmd(shadowlength,1;Load,"RollingNumbersPaneDisplayMeter"),
-			OnCommand=cmd(horizalign,right;x,cell_width/2 - 2;skewx,-0.125),
+			InitCommand=cmd(horizalign,right;x,cell_width/2 + (x_margin/4);y,1;shadowlength,1;Load,"RollingNumbersPaneDisplayMeter"),
+			OnCommand=cmd(skewx,-0.125;zoom,0.75;maxwidth,36/0.75),
 			EnabledCommand=cmd(diffuse,iconColor),
-			DisabledCommand=cmd(diffuse,color("#7C7C7C")),
+			DisabledCommand=cmd(diffuse,ThemeColor.DecorationBackground),
 			OffCommand=cmd(finishtweening)
 		},
 		LoadFont("Common Normal") .. {
 			Name="Description",
 			Text=ToEnumShortString(diff),
-			InitCommand=cmd(zoom,0.5;shadowlength,1;x,-cell_width/2 + 2;y,12),
-			OnCommand=cmd(horizalign,left),
-			EnabledCommand=cmd(diffuse,iconColor;textglowmode,'TextGlowMode_Inner';glow,color("1,1,1,0.875")),
-			DisabledCommand=cmd(diffuse,color("#7C7C7C")),
+			InitCommand=cmd(zoom,0.5;x,-cell_width/2),
+			OnCommand=cmd(horizalign,left;maxwidth,56/0.5),
+			EnabledCommand=cmd(diffuse,iconColor),
+			DisabledCommand=cmd(diffuse,ThemeColor.DecorationBackground),
 			OffCommand=cmd(finishtweening)
-		}
+		},
 	}
+	for j=1,#base do
+		for k=1,difficulty_num_slots do
+			base[#base+1] = Def.Quad {
+				InitCommand=cmd(x,difficulty_slot_x + (difficulty_slot_spacing * k);zoomto,difficulty_slot_width,24),
+				OnCommand=cmd(),
+				AppealCommand=cmd(glowshift;effectcolor1,color("1,1,1,0");effectcolor2,color("1,1,1,0.5");effecttiming,0.125,0,0.375,1.5;effectoffset,1 - (j+k)*0.1;effectclock,'timerglobal'),
+				EnabledCommand=function(self, params)
+					local isVisible = (k <= params.Meter)
+					if isVisible then
+						self:diffuse(isVisible and iconColor or ThemeColor.DecorationBackground)
+						self:finishtweening()
+						self:queuecommand("Appeal")
+					else
+						self:stopeffect()
+						self:finishtweening()
+					end
+				end,
+				DisabledCommand=cmd(stopeffect;diffuse,ThemeColor.DecorationBackground)
+			}
+		end
+	end
+	difficulty_frame[#difficulty_frame+1] = base
 end
 
 local y_offset = -40
@@ -227,7 +270,6 @@ for i,pn in pairs(PlayerNumber) do
 end
 
 t[#t+1] = difficulty_frame
-t[#t+1] = cursor_frame
 t[#t+1] = LoadFont("Common Normal") .. {
 	InitCommand=cmd(x,x_spacing * 2.5;y,40),
 	BeginCommand=function(self)

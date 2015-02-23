@@ -16,10 +16,8 @@ end
 local background = Def.ActorFrame {}
 background[#background+1] = Def.ActorFrame {
 	Name="PaneDisplayBackground",
-	Def.Quad {
-		Name="Background",
-		InitCommand=cmd(zoomto,background_width,background_height),
-		OnCommand=cmd(diffuse,ThemeColor.Background)
+	LoadActor(THEME:GetPathB("_frame","3x3"),"box",background_width-8,background_height-8) .. {
+		OnCommand=cmd(diffuse,ThemeColor.BackgroundDark)
 	},
 	Def.Quad {
 		Name="Header",
