@@ -12,6 +12,26 @@ local function getPlayersName(pn)
 	return s
 end
 
+local function StepsDisplay(pn)
+	local function set(self, player)
+		self:SetFromGameState( player )
+	end
+
+	local t = Def.StepsDisplay {
+		InitCommand=cmd(Load,"StepsDisplay",GAMESTATE:GetPlayerState(pn))
+	}
+
+	if pn == PLAYER_1 then
+		t.CurrentStepsP1ChangedMessageCommand=function(self) set(self, pn) end
+		t.CurrentTrailP1ChangedMessageCommand=function(self) set(self, pn) end
+	else
+		t.CurrentStepsP2ChangedMessageCommand=function(self) set(self, pn) end
+		t.CurrentTrailP2ChangedMessageCommand=function(self) set(self, pn) end
+	end
+
+	return t
+end
+
 -- Background
 local background = Def.ActorFrame {}
 background[#background+1] = Def.ActorFrame {
@@ -22,8 +42,15 @@ background[#background+1] = Def.ActorFrame {
 	Def.Quad {
 		Name="Header",
 		InitCommand=cmd(zoomto,background_width-16,2;y,-32),
-		OnCommand=cmd(diffuse,ThemeColor.BackgroundDark)
+		OnCommand=cmd(diffuse,ThemeColor.Background)
 	},
+}
+
+-- Steps
+local steps_display = Def.ActorFrame {
+	InitCommand=cmd(x,72;y,-48),
+	--
+	StepsDisplay(pn)
 }
 
 -- Name
@@ -35,7 +62,7 @@ player_name[#player_name+1] = Def.ActorFrame {
 	LoadFont("Common Large") .. {
 		Text=getPlayersName(pn),
 		InitCommand=cmd(x,-16;horizalign,left),
-		OnCommand=cmd(zoom,0.75;diffuse,PlayerColor(pn);shadowlength,1)
+		OnCommand=cmd(zoom,0.5;diffuse,PlayerColor(pn);shadowlength,1)
 	}
 }
 
@@ -276,6 +303,7 @@ end
 
 t[#t+1] = background
 t[#t+1] = player_name
+t[#t+1] = steps_display
 t[#t+1] = best_score
 t[#t+1] = radar_text
 t[#t+1] = grades

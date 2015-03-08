@@ -1,6 +1,7 @@
 local t = Def.ActorFrame {}
 --
 t[#t+1] = Def.ActorFrame {
+	FOV=90,
 	SetCommand=function(self)
 		local c = self:GetChildren()
 
@@ -14,13 +15,12 @@ t[#t+1] = Def.ActorFrame {
 			return 
 		end
 
-		genre = GenreGen.GenerateFromSong( song)
-		disp_genre = (genre ~= "") and genre or "None"
+		genre = GenreGen.GenerateFromSong(song)
 
 		self:playcommand("TweenOn")
 		c.Title:settext( song:GetDisplayFullTitle() )
 		c.Artist:settext( song:GetDisplayArtist() )
-		c.Genre:settext( disp_genre )
+		c.Genre:settext( genre )
 	end,
 	CurrentSongChangedMessageCommand=cmd(playcommand,"Set"),
 	DisplayLanguageChangedMessageCommand=cmd(playcommand,"Set"),
@@ -35,8 +35,8 @@ t[#t+1] = Def.ActorFrame {
 		Name="Title",
 		Text="SongName",
 		InitCommand=cmd(y,-6;maxwidth,512;horizalign,right),
-		OnCommand=cmd(shadowlength,1;skewx,-0.125;diffusebottomedge,ThemeColor.PrimaryDark),
-		TweenOnCommand=cmd(finishtweening;diffusealpha,0;addx,-8;addy,-8;decelerate,TIME_SHORT;addx,8;addy,8;diffusealpha,1)
+		OnCommand=cmd(shadowlength,1;diffusebottomedge,ThemeColor.PrimaryDark),
+		TweenOnCommand=cmd(finishtweening;diffusealpha,0;addx,-8;addy,-8;z,64;decelerate,TIME_SHORT;addx,8;addy,8;z,0;diffusealpha,1)
 	},
 	LoadFont("Common Normal") .. {
 		Name="Artist",

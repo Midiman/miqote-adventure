@@ -28,14 +28,15 @@ t[#t+1] = StandardDecorationFromFileOptional("BPMDisplay", "BPMDisplay")
 t[#t+1] = StandardDecorationFromFileOptional("BPMLabel", "BPMLabel")
 
 -- SortOrder
-t[#t+1] = StandardDecorationFromFileOptional("SortOrder", "SortOrder")
+t[#t+1] = StandardDecorationFromFileOptional("SortOrderFrame", "SortOrderFrame")
+t[#t+1] = StandardDecorationFromFileOptional("SortOrder", "SortOrderDisplay")
 
 -- DifficultyDisplay
 t[#t+1] = StandardDecorationFromFileOptional("DifficultyDisplay","DifficultyDisplay")
 
 -- SongCost
-t[#t+1] = StandardDecorationFromFileOptional("SongCost","SongCost")
-
+t[#t+1] = StandardDecorationFromFileOptional("SongTime","SongTimeDisplay")
+t[#t+1] = StandardDecorationFromFileOptional("SongTimeLabel","SongTimeLabel")
 -- PaneDisplay
 for i, pn in pairs(PlayerNumber) do
 	if ShowStandardDecoration("PaneDisplay" ..  ToEnumShortString(pn)) then

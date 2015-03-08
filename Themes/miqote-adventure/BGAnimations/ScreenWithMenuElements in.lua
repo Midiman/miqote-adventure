@@ -5,7 +5,7 @@ t[#t+1] = Def.ActorFrame {
 	--
 	Def.Quad {
 		InitCommand=cmd(zoomto,SCREEN_WIDTH,SCREEN_HEIGHT;visible,false),
-		OnCommand=cmd(visible,true;diffuse,Color.Black;linear,TIME_NORMAL;diffusealpha,0)
+		OnCommand=cmd(visible,true;diffuse,Color.Black;linear,TIME_INSTANT;diffusealpha,0)
 	}
 }
 

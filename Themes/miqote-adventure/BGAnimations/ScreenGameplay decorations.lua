@@ -4,7 +4,7 @@ local function StepsDisplay(pn)
 	end
 
 	local t = Def.StepsDisplay {
-		InitCommand=cmd(Load,"StepsDisplay",GAMESTATE:GetPlayerState(pn))
+		InitCommand=cmd(Load,"StepsDisplayGameplay",GAMESTATE:GetPlayerState(pn))
 	}
 
 	if pn == PLAYER_1 then
