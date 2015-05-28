@@ -149,7 +149,7 @@ local radar_x_spacing = 120
 local radar_y_spacing = 17
 local radar_value_offset_x = 96
 local radar_rows = 4
-local radar_start = 6
+local radar_start = 7
 
 for i=radar_start,#RadarCategory do 
 	local j = i - radar_start
@@ -234,11 +234,11 @@ grades[#grades+1] = Def.ActorFrame {
 
 			if PROFILEMAN:IsPersistentProfile(pn) then
 				-- player profile
-				profile = PROFILEMAN:GetProfile(pn);
+				profile = PROFILEMAN:GetProfile(pn)
 			else
 				-- machine profile
-				profile = PROFILEMAN:GetMachineProfile();
-			end;
+				profile = PROFILEMAN:GetMachineProfile()
+			end
 
 			scorelist = profile:GetHighScoreList(SongOrCourse,StepsOrTrail)
 			assert(scorelist)
