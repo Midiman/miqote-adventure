@@ -1,10 +1,12 @@
 local pn = ...
 
 local section_width = 256
-local section_height = 24
+local section_height = 32
 local section_margin = 4
 local section_y_spacing = 6
 local value_format = "%04i"
+
+local side = (pn == PLAYER_1) and 1 or -1
 
 local function GetTapNoteScore( tns )
 	local stats = STATSMAN:GetPlayedStageStats(1):GetPlayerStageStats(pn)
@@ -54,7 +56,13 @@ for i, jl in pairs(JudgmentLine) do
 			Name="JudgmentValue",
 			Text=string.format(value_format,0),
 			InitCommand=cmd(x,(section_width/2)-section_margin;horizalign,right),
-			OnCommand=cmd(diffuse,ThemeColor.TextDark;shadowlength,1)
+			OnCommand=cmd(diffuse,ThemeColor.Text;shadowlength,1)
+		},
+		LoadFont("Common Normal") .. {
+			Name="Previous",
+			Text="-",
+			InitCommand=cmd(visible,false;x,section_width/2 * side;y,3;horizalign,(side == 1) and left or right),
+			OnCommand=cmd(zoom,0.75;diffuse,ThemeColor.TextDark;shadowlength,1)
 		},
 	}
 end

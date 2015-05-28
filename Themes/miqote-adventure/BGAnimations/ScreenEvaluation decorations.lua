@@ -77,16 +77,15 @@ for pn in ivalues(GAMESTATE:GetHumanPlayers()) do
 	}
 end
 
--- Bonus
+-- ScorePanel
 for pn in ivalues(GAMESTATE:GetHumanPlayers()) do
-	t[#t+1] = LoadActor(THEME:GetPathG(Var "LoadingScreen","bonuses"), pn) .. {
+	t[#t+1] = LoadActor(THEME:GetPathG(Var "LoadingScreen","scorepanel"), pn) .. {
 		InitCommand=function(self)
-			self:name("Bonuses" .. ToEnumShortString(pn))
+			self:name("ScorePanel" .. ToEnumShortString(pn))
 			ActorUtil.LoadAllCommandsAndSetXY(self,Var "LoadingScreen")
 		end
 	}
 end
-
 -- SongTitle
 t[#t+1] = StandardDecorationFromFileOptional("SongTitle","SongTitle")
 

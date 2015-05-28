@@ -149,7 +149,7 @@ local radar_x_spacing = 120
 local radar_y_spacing = 17
 local radar_value_offset_x = 96
 local radar_rows = 4
-local radar_start = 6
+local radar_start = 7
 
 for i=radar_start,#RadarCategory do 
 	local j = i - radar_start

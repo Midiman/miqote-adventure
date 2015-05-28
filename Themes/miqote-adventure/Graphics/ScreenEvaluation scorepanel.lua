@@ -1,7 +1,7 @@
 local pn = ...
 
 local section_width = 384
-local section_height = 28
+local section_height = 96
 local section_margin = 4
 local section_y_spacing = 4
 
@@ -12,6 +12,33 @@ local value_format = "%04i"
 
 local t = Def.ActorFrame {}
 
+local background = Def.ActorFrame {
+	Def.Quad {
+		InitCommand=cmd(zoomto,section_width,section_height),
+		OnCommand=cmd(diffuse,ThemeColor.Background)
+	},
+}
+
+local score = Def.ActorFrame {
+	OnCommand=cmd(playcommand,"Set"),
+	SetCommand=function(self)
+		local c = self:GetChildren()
+
+		local stats = STATSMAN:GetPlayedStageStats(1):GetPlayerStageStats(pn)
+		
+		local score = stats:GetPercentDancePoints()
+
+		c.Score:settextf("%02.2f%%", score * 100)
+	end,
+	--
+	LoadFont("Common Large") .. {
+		Name="Score",
+		Text="Test",
+		InitCommand=cmd(shadowlength,1;diffuse,PlayerColor(pn))
+	}
+}
+
+--[[
 for i, rc in pairs(RadarCategory) do
 	if i < 6 then
 		t[#t+1] = Def.ActorFrame {
@@ -70,5 +97,8 @@ for i, rc in pairs(RadarCategory) do
 		}
 	end
 end
+]]
 
+--t[#t+1] = background
+t[#t+1] = score
 return t
