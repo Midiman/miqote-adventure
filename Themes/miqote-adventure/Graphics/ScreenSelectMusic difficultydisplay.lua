@@ -27,10 +27,12 @@ local x_margin = 38
 local x_spacing = cell_width + x_margin
 local y_spacing = 24
 local difficulty_num_slots = 14
+local difficulty_num_slots_beginner = 4
 local difficulty_slot_width = 36
-local difficulty_slot_x = 60
+local difficulty_slot_width_beginner = 130
+local difficulty_slot_x = 84
 local difficulty_slot_spacing = 40
-
+local difficulty_slot_spacing_beginner = 142
 local colorDisabled = color("#333333")
 
 local difficulty_frame = Def.ActorFrame {}
@@ -185,11 +187,14 @@ for i,diff in pairs(Difficulty) do
 		},
 	}
 	for j=1,#base do
-		for k=1,difficulty_num_slots do
+		local _numSlots = (diff == "Difficulty_Beginner") and difficulty_num_slots_beginner or difficulty_num_slots
+		for k=1, _numSlots do
 			local r = math.random(1,1000) / 1000
+			local _width = (diff == "Difficulty_Beginner") and difficulty_slot_width_beginner or difficulty_slot_width
+			local _spacing = (diff == "Difficulty_Beginner") and difficulty_slot_spacing_beginner or difficulty_slot_spacing
 			base[#base+1] = Def.Quad {
-				InitCommand=cmd(x,difficulty_slot_x + (difficulty_slot_spacing * k);basezoomx,difficulty_slot_width;basezoomy,8),
-				OnCommand=cmd(shadowlength,1),
+				InitCommand=cmd(x,difficulty_slot_x + (_spacing * (k-1));basezoomx,_width;basezoomy,8),
+				OnCommand=cmd(horizalign,left;shadowlength,1),
 				AppealCommand=cmd(diffuseshift;effectclock,'timer';effectcolor1,iconColor;effectcolor2,iconColorDark;effecttiming,0.125,0,0.375,1.5;effectoffset,r),
 				BossAppealCommand=cmd(diffuseramp;effectclock,'beat';effectcolor2,iconColor;effectcolor1,iconColorDark;effectperiod,2;effectoffset,1 - k/difficulty_num_slots),
 				EnabledCommand=function(self, params)

@@ -33,6 +33,16 @@ for i, pn in pairs(PlayerNumber) do
 	end
 end
 
+-- Bonus
+for pn in ivalues(GAMESTATE:GetHumanPlayers()) do
+	t[#t+1] = LoadActor(THEME:GetPathG(Var "LoadingScreen","ScoringTest"), pn) .. {
+		InitCommand=function(self)
+			self:name("ScoringTest" .. ToEnumShortString(pn))
+			ActorUtil.LoadAllCommandsAndSetXY(self,Var "LoadingScreen")
+		end
+	}
+end
+
 -- StepsDisplay
 for i, pn in pairs(PlayerNumber) do
 	if ShowStandardDecoration("StepsDisplay" ..  ToEnumShortString(pn)) then
